@@ -1,5 +1,5 @@
 const assignRoles = (players) => {
-  let shuffled = players.sort(() => 0.5 - Math.random())
+  let shuffled = players.sort(() => 0.5 - Math.random())//desordena el array
   shuffled[0].role = "marco"
   shuffled[1].role = "polo-especial"
   for (let i = 2; i < shuffled.length; i++) {

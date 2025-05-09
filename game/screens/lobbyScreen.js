@@ -24,14 +24,14 @@ export default function renderLobbyScreen(data) {
     usersCount.innerHTML = data?.players.length || 0;
   });
 
-  // Use HTTP request instead of socket.emit
+  // Use HTTP request instead of socket.emit inicializa el juego 
   startButton.addEventListener("click", async () => {
-    await makeRequest("/api/game/start", "POST");
+    await makeRequest("/api/game/start", "POST"); //hacer una peticion
   });
 
   // Keep the socket.on listener for game start event
   socket.on("startGame", (role) => {
     navigateTo("/game", { nickname: data.nickname, role });
   });
-  
+
 }

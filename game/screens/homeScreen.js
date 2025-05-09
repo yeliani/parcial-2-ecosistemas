@@ -26,7 +26,7 @@ export default function renderHomeScreen() {
     // Instead of emitting, make an API request se manda al servidor 
     const result = await makeRequest("/api/game/join", "POST", {
       nickname: userName,
-      socketId: socket.id,
+      socketId: socket.id, //envia el id a join 
     });
 
     if (result.success !== false) {

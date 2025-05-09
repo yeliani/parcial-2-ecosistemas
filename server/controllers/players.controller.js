@@ -1,6 +1,7 @@
 const playersDb = require("../db/players.db");
 
-const getPlayers = async (req, res) => {
+//trae los usuario 
+const getPlayers = async (req, res) => { 
   try {
     const players = playersDb.getAllPlayers();
     res.status(200).json(players);

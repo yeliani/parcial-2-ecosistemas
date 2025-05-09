@@ -30,12 +30,12 @@ export default function renderGameGround(data) {
   shoutbtn.addEventListener("click", async () => {
     if (myRole === "marco") {
       await makeRequest("/api/game/marco", "POST", {
-        socketId: socket.id,
+        socketId: socket.id, //se crea con el id de marco
       });
     }
     if (myRole === "polo" || myRole === "polo-especial") {
       await makeRequest("/api/game/polo", "POST", {
-        socketId: socket.id,
+        socketId: socket.id,//se crea con el id de marco
       });
     }
     shoutbtn.style.display = "none";
@@ -47,7 +47,7 @@ export default function renderGameGround(data) {
       const key = event.target.dataset.key;
       await makeRequest("/api/game/select-polo", "POST", {
         socketId: socket.id,
-        poloId: key,
+        poloId: key, //envia el id del polo 
       });
     }
   });

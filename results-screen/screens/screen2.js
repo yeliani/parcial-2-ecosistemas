@@ -28,7 +28,7 @@ export default function renderScreen2(data) {
     navigateTo("/");
   });
 
-  document.getElementById("sort-alpha").addEventListener("click", () => {
+  document.getElementById("sort-alpha").addEventListener("click", () => { //aqui ordeno por orden alfabetico 
     const sorted = [...data.rankedPlayers].sort((a, b) =>
       a.nickname.localeCompare(b.nickname)
     );

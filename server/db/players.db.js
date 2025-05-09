@@ -10,6 +10,7 @@ const players = [];
  * Get all players
  * @returns {Array} Array of player objects
  */
+//Devuelve el array completo de jugadores actuales.
 const getAllPlayers = () => {
   return players;
 };
@@ -21,7 +22,7 @@ const getAllPlayers = () => {
  * @returns {Object} The created player
  */
 const addPlayer = (nickname, socketId) => {
-  const newPlayer = { id: socketId, nickname };
+  const newPlayer = { id: socketId, nickname }; // Crea un objeto jugador con id (su socketId) y nickname.
   players.push(newPlayer);
   return newPlayer;
 };
@@ -31,7 +32,7 @@ const addPlayer = (nickname, socketId) => {
  * @param {string} socketId - Player's socket ID
  * @returns {Object|null} Player object or null if not found
  */
-const findPlayerById = (socketId) => {
+const findPlayerById = (socketId) => { // Busca un jugador según su socketId. Si lo encuentra, retorna el objeto jugador.
   return players.find((player) => player.id === socketId) || null;
 };
 
@@ -71,7 +72,7 @@ const getGameData = () => {
  * @returns {void}
  */
 const resetGame = () => {
-  players.splice(0, players.length);
+  players.splice(0, players.length);//Borra todos los jugadores de la partida.Hace un .splice para vaciar el array, manteniendo la referencia (igual que antes).
 };
 /**
  * Update player's score
@@ -79,10 +80,11 @@ const resetGame = () => {
  * @param {number} delta - Points to add (can be negative)
  * @returns {Object|null} Updated player or null if not found
  */
+//actualiza el puntaje del jugador 
 const updateScore = (socketId, delta) => {
-  const player = findPlayerById(socketId);
+  const player = findPlayerById(socketId);//busca al jugador por id
   if (player) {
-    player.score = (player.score || 0) + delta;
+    player.score = (player.score || 0) + delta; //sumando los puntajes 
     return player;
   }
   return null;
@@ -91,7 +93,7 @@ const updateScore = (socketId, delta) => {
 function clearScores() {
   players.forEach((player) => {
     player.score = 0;
-    player.role = null; // también puedes limpiar el rol si lo deseas
+    player.role = null; // limpiar el rol 
   });
 }
 

@@ -6,14 +6,14 @@ const {
 
 const joinGame = async (req, res) => {
   try {
-    const { nickname, socketId } = req.body;
+    const { nickname, socketId } = req.body;//desestructuración del body
 
     playersDb.addPlayer(nickname, socketId);
 
-    const currentGameData = playersDb.getGameData();
+    const currentGameData = playersDb.getGameData();//trae todos lo jugadores actuales 
 
     emitEvent("userJoined", currentGameData);
-    emitEvent("nowPlayers", currentGameData.players);
+    emitEvent("nowPlayers", currentGameData.players);//actualizar en la pantalla los jugadores 
 
     res.status(200).json({ success: true, players: currentGameData.players });
   } catch (error) {
@@ -24,7 +24,7 @@ const joinGame = async (req, res) => {
 
 const startGame = async (req, res) => {
   try {
-    const playersWithRoles = playersDb.assignPlayerRoles();
+    const playersWithRoles = playersDb.assignPlayerRoles();//asigna los roles 
     // [
     //   { id: 4432,  name: "Luis", role: "marco" },
     //   { id: 4432, name: "Marta", role: "polo-especial" },
@@ -33,7 +33,7 @@ const startGame = async (req, res) => {
     // ]
 
     playersWithRoles.forEach((player) => {
-      emitToSpecificClient(player.id, "startGame", player.role);
+      emitToSpecificClient(player.id, "startGame", player.role);//avisa el rol a cada jugador
     });
 
     res.status(200).json({ success: true });
@@ -59,7 +59,7 @@ const notifyMarco = async (req, res) => {
     polosToNotify.forEach((poloPlayer) => {
       emitToSpecificClient(poloPlayer.id, "notification", {
         message: "Marco!!!",
-        userId: socketId,
+        userId: socketId, //id del jugador que grito
       });
     });
 
@@ -102,7 +102,7 @@ const selectPolo = async (req, res) => {
     // marco= { id: 4432, name: "Luis", role: "marco" }
     // polo= { id: 4432, name: "Marta", role: "polo-especial" }
 
-    const allPlayers = playersDb.getAllPlayers();
+    const allPlayers = playersDb.getAllPlayers();//devuelve un arreglo
 
     let message = "";
 
@@ -120,7 +120,7 @@ const selectPolo = async (req, res) => {
       // polosEspeciales= [{ id: 4432, name: "Luis", role: "polo-especial" }]
 
       polosEspeciales.forEach((p) => {
-        playersDb.updateScore(p.id, 10); // gana 10
+        playersDb.updateScore(p.id, 10); // gana 
       });
 
       message = `¡El marco ${marco.nickname} ha perdido! No atrapó al polo especial.`;
@@ -131,8 +131,8 @@ const selectPolo = async (req, res) => {
     });
 
     // Enviar jugadores actualizados con sus puntajes al frontend
-    const updatedGameData = playersDb.getGameData();
-    emitEvent("nowPlayers", updatedGameData.players);
+    const updatedGameData = playersDb.getGameData(); //lo trae como un objeto
+    emitEvent("nowPlayers", updatedGameData.players);//navegar a screen 2
 
     // Verifica si alguien ya ganó
     const winner = allPlayers.find((p) => p.score >= 100);

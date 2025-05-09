@@ -1,28 +1,47 @@
 import { navigateTo, makeRequestScreen2 } from "../app.js";
 
-export default function renderScreen1() {
-  const appContainer = document.getElementById("app");
-  appContainer.innerHTML = `
-      <div id="screen1">
-        <h2>Screen 1</h2>
-        <p>Hello from screen 1</p>
+export default function renderScreen2(data) {
+  const app = document.getElementById("app");
 
-        <h3>Current Players</h3>
-        <div id="playersListContainer"></div>
-      </div>
-      `;
+  app.innerHTML = `
+    <div id="screen2">
+      <h2>🏆 ¡Ganador: ${data?.winner?.nickname}!</h2>
+      <p>Obtuvo ${data?.winner?.score} puntos</p>
 
-  const playersListContainer = document.getElementById("playersListContainer");
+      <h3>Ranking:</h3>
+      <ol id="ranking-list">
+        ${data.rankedPlayers
+          .map(
+            (player, index) =>
+              `<li>${index + 1}. ${player.nickname} (${player.score} pts)</li>`
+          )
+          .join("")}
+      </ol>
 
-  socket.on("nowPlayers", (playersArray) => {
-    playersListContainer.innerHTML = ""; 
-    
-    playersArray.forEach((player) => {
-      playersListContainer.innerHTML += `
-        <p>${player.nickname} | Rol: ${
-        player.role ?? "sin asignar"
-      } | Puntos: ${player.score ?? 0}</p>
-      `;
-    });
+      <button id="sort-alpha">Ordenar alfabéticamente</button>
+      <button id="go-screen-back">Volver al inicio</button>
+
+    </div>
+  `;
+
+  document.getElementById("go-screen-back").addEventListener("click", () => {
+    navigateTo("/");
   });
+
+  document.getElementById("sort-alpha").addEventListener("click", () => {
+    const sorted = [...data.rankedPlayers].sort((a, b) =>
+      a.nickname.localeCompare(b.nickname)
+    );
+    renderRanking(sorted);
+  });
+
+  function renderRanking(players) {
+    const rankingList = document.getElementById("ranking-list");
+    rankingList.innerHTML = players
+      .map(
+        (player, index) =>
+          `<li>${index + 1}. ${player.nickname} (${player.score} pts)</li>`
+      )
+      .join("");
+  }
 }
